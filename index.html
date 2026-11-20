@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#174f43">
 <title>CoE-prosec | Citizen of Earth</title>
-
 <style>
 :root {
   --primary:#174f43;
@@ -139,7 +138,6 @@ button:disabled {
 }
 
 .wide { width:100%; }
-
 .hidden { display:none!important; }
 
 .card {
@@ -333,11 +331,8 @@ footer {
 
 <main>
 
-<!-- WELCOME -->
-
 <section id="welcome">
   <p class="eyebrow">A more private certificate</p>
-
   <h1>Your place<br>on Earth.</h1>
 
   <p class="intro">
@@ -348,12 +343,10 @@ footer {
 
   <div class="card">
     <p class="eyebrow">Create a new file</p>
-
     <p class="intro" style="margin:0 0 18px">
       Answer three declaration questions, personalize your certificate,
       and protect it with a password.
     </p>
-
     <button class="primary wide" id="begin">
       Create a .coe file →
     </button>
@@ -361,7 +354,6 @@ footer {
 
   <div class="card" style="margin-top:14px">
     <p class="eyebrow">Already have a certificate?</p>
-
     <p class="intro" style="margin:0 0 18px">
       Open an original .txt certificate or an encrypted .coe certificate.
     </p>
@@ -378,7 +370,6 @@ footer {
     <p class="hint">
       Files are processed locally in your browser. They are not uploaded.
     </p>
-
     <p id="open-status" class="status" role="status"></p>
   </div>
 
@@ -389,9 +380,6 @@ footer {
   </div>
 </section>
 
-
-<!-- QUESTIONS -->
-
 <section id="quiz" class="hidden" aria-live="polite">
   <p class="eyebrow">A simple declaration</p>
 
@@ -401,7 +389,6 @@ footer {
 
   <div class="card">
     <p class="step" id="step">QUESTION 01 / 03</p>
-
     <h2 id="question">Are you human?</h2>
 
     <div class="actions">
@@ -411,12 +398,8 @@ footer {
   </div>
 </section>
 
-
-<!-- CREATE CERTIFICATE -->
-
 <section id="details" class="hidden">
   <p class="eyebrow">Make it yours</p>
-
   <h1>Your certificate,<br>your key.</h1>
 
   <p class="intro">
@@ -470,12 +453,8 @@ footer {
   </form>
 </section>
 
-
-<!-- UNLOCK -->
-
 <section id="unlock" class="hidden">
   <p class="eyebrow">Certificate security</p>
-
   <h1 id="unlock-title">Unlock<br>certificate.</h1>
 
   <p class="intro" id="unlock-description">
@@ -501,19 +480,12 @@ footer {
     <button class="secondary wide" type="button" id="cancel-unlock">
       Cancel
     </button>
-
   </form>
 </section>
 
-
-<!-- OPENED CERTIFICATE -->
-
 <section id="opened" class="hidden result" aria-live="polite">
-
   <div class="seal">◎</div>
-
   <p class="eyebrow">Certificate opened</p>
-
   <h1>You belong<br>to Earth.</h1>
 
   <p class="intro" style="margin-left:auto;margin-right:auto">
@@ -521,35 +493,23 @@ footer {
   </p>
 
   <div class="certificate" id="opened-certificate">
-
     <span class="certificate-label">Certificate of belonging</span>
-
     <strong>Citizen of Earth</strong>
-
     <p id="opened-name"></p>
     <p id="opened-date"></p>
     <p id="opened-message"></p>
-
     <p class="private-id" id="opened-id"></p>
-
     <div id="opened-extra"></div>
-
   </div>
 
   <div class="button-row no-print">
-    <button class="primary" id="print-certificate">
-      Print certificate
-    </button>
-
-    <button class="secondary" id="back-home">
-      Back to home
-    </button>
+    <button class="primary" id="print-certificate">Print certificate</button>
+    <button class="secondary" id="back-home">Back to home</button>
   </div>
 
   <p class="hint">
     Your private ID is displayed only after successful processing.
   </p>
-
 </section>
 
 </main>
@@ -560,7 +520,6 @@ footer {
 </footer>
 
 </div>
-
 
 <script>
 "use strict";
@@ -587,11 +546,6 @@ function setStatus(id, message, kind = "") {
   element.className = "status " + kind;
 }
 
-
-// --------------------------------------------------
-// QUESTIONS
-// --------------------------------------------------
-
 const questions = [
   "Are you human?",
   "Are you on Earth?",
@@ -602,9 +556,7 @@ let questionIndex = 0;
 
 function renderQuestion() {
   $("question").textContent = questions[questionIndex];
-
-  $("step").textContent =
-    `QUESTION 0${questionIndex + 1} / 03`;
+  $("step").textContent = `QUESTION 0${questionIndex + 1} / 03`;
 
   document.querySelectorAll(".progress span")
     .forEach((element, index) => {
@@ -632,11 +584,6 @@ $("no").addEventListener("click", () => {
   show("welcome");
 });
 
-
-// --------------------------------------------------
-// CRYPTOGRAPHY
-// --------------------------------------------------
-
 function randomBytes(length) {
   const bytes = new Uint8Array(length);
   crypto.getRandomValues(bytes);
@@ -654,6 +601,10 @@ function toB64(bytes) {
 }
 
 function fromB64(value) {
+  if (typeof value !== "string" || value.length > 150000) {
+    throw new Error("Invalid encoded data.");
+  }
+
   const binary = atob(value);
 
   return Uint8Array.from(
@@ -663,7 +614,6 @@ function fromB64(value) {
 }
 
 async function deriveKey(password, salt, iterations) {
-
   const material = await crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(password),
@@ -694,7 +644,6 @@ const VERSION = 1;
 const ITERATIONS = 600000;
 
 async function encryptCertificate(data, password) {
-
   const salt = randomBytes(16);
   const iv = randomBytes(12);
 
@@ -702,11 +651,7 @@ async function encryptCertificate(data, password) {
     `${FORMAT}:${VERSION}`
   );
 
-  const key = await deriveKey(
-    password,
-    salt,
-    ITERATIONS
-  );
+  const key = await deriveKey(password, salt, ITERATIONS);
 
   const plaintext = new TextEncoder().encode(
     JSON.stringify(data)
@@ -736,7 +681,6 @@ async function encryptCertificate(data, password) {
 }
 
 async function decryptCertificate(envelope, password) {
-
   if (
     !envelope ||
     envelope.format !== FORMAT ||
@@ -804,42 +748,48 @@ async function decryptCertificate(envelope, password) {
   return data;
 }
 
+function parseLegacyCertificate(rawText) {
+  let text = rawText
+    .replace(/^\uFEFF/, "")
+    .replace(/\r\n?/g, "\n")
+    .trim();
 
-// --------------------------------------------------
-// ORIGINAL CITIZEN OF EARTH TXT SUPPORT
-// --------------------------------------------------
+  if (!text.includes("\n") && text.includes("\\n")) {
+    text = text.replace(/\\n/g, "\n");
+  }
 
-function parseLegacyCertificate(text) {
+  function getField(label) {
+    const regex = new RegExp(
+      "^\\s*" + label + "\\s*:\\s*(.*)$",
+      "im"
+    );
 
-  const name = text.match(/^Name:\s*(.*)$/m)?.[1]?.trim();
+    return text.match(regex)?.[1]?.trim() || null;
+  }
 
-  const id = text.match(
-    /^Citizenship ID:\s*(.*)$/m
-  )?.[1]?.trim();
-
-  const date = text.match(
-    /^Date issued:\s*(.*)$/m
-  )?.[1]?.trim();
+  const name = getField("Name");
+  const id = getField("Citizenship ID");
+  const date = getField("Date issued");
 
   const messageMatch = text.match(
-    /Personal message:\s*([\s\S]*?)(?=\n\s*DECLARATION)/i
-  );
-
-  const declarationMatch = text.match(
-    /DECLARATION\s*([\s\S]*?)(?=\n\s*This is a personal, symbolic certificate\.)/i
+    /Personal\s+message\s*:\s*([\s\S]*?)(?=\n\s*DECLARATION\b)/i
   );
 
   if (!name || !id || !date || !messageMatch) {
     throw new Error(
-      "This text file does not contain a valid Citizen of Earth certificate."
+      "Could not recognize this certificate. Check that it contains Name, Citizenship ID, Date issued, and Personal message."
     );
   }
 
   const parsedDate = new Date(date);
 
   if (Number.isNaN(parsedDate.getTime())) {
-    throw new Error("The certificate has an invalid issue date.");
+    throw new Error("The certificate contains an invalid issue date.");
   }
+
+  const declarationMatch = text.match(
+    /DECLARATION\s*([\s\S]*?)(?=\n\s*This is a personal, symbolic certificate\.|\n\s*here are some famous quotes|\s*$)/i
+  );
 
   return {
     name,
@@ -856,20 +806,13 @@ function parseLegacyCertificate(text) {
   };
 }
 
-
-// --------------------------------------------------
-// FILE DOWNLOAD
-// --------------------------------------------------
-
 function downloadCOE(envelope) {
-
   const blob = new Blob(
     [JSON.stringify(envelope, null, 2)],
     { type: "application/vnd.coe-prosec+json" }
   );
 
   const url = URL.createObjectURL(blob);
-
   const anchor = document.createElement("a");
 
   anchor.href = url;
@@ -882,182 +825,111 @@ function downloadCOE(envelope) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-
-// --------------------------------------------------
-// CREATE NEW CERTIFICATE
-// --------------------------------------------------
-
 $("details-form").addEventListener("submit", async event => {
-
   event.preventDefault();
 
   const name = $("citizen-name").value.trim();
   const message = $("citizen-message").value.trim();
-
   const password = $("password").value;
   const confirmation = $("password-confirm").value;
 
   if (password.length < 12) {
-    setStatus(
-      "create-status",
-      "Your password must contain at least 12 characters.",
-      "error"
-    );
+    setStatus("create-status", "Your password must contain at least 12 characters.", "error");
     return;
   }
 
   if (password !== confirmation) {
-    setStatus(
-      "create-status",
-      "The passwords do not match.",
-      "error"
-    );
+    setStatus("create-status", "The passwords do not match.", "error");
     return;
   }
 
   if (!crypto.subtle) {
-    setStatus(
-      "create-status",
-      "Encryption is unavailable. Use HTTPS or localhost in a modern browser.",
-      "error"
-    );
+    setStatus("create-status", "Encryption is unavailable. Use HTTPS or localhost in a modern browser.", "error");
     return;
   }
 
   const button = $("create-file");
-
   button.disabled = true;
 
-  setStatus(
-    "create-status",
-    "Generating ID and encrypting certificate..."
-  );
+  setStatus("create-status", "Generating ID and encrypting certificate...");
 
   try {
-
     const data = {
       private_id: toB64(randomBytes(32)).replace(/=+$/, ""),
       name,
       message,
       issued_at: new Date().toISOString(),
-
-      declaration:
-        "The holder affirms that they are human, are on Earth, and love humans and Earth."
+      declaration: "The holder affirms that they are human, are on Earth, and love humans and Earth."
     };
 
-    const envelope = await encryptCertificate(
-      data,
-      password
-    );
-
+    const envelope = await encryptCertificate(data, password);
     downloadCOE(envelope);
 
-    setStatus(
-      "create-status",
-      "Your encrypted .coe certificate has been created.",
-      "success-text"
-    );
+    setStatus("create-status", "Your encrypted .coe certificate has been created.", "success-text");
 
   } catch (error) {
-
-    setStatus(
-      "create-status",
-      "Could not create certificate: " + error.message,
-      "error"
-    );
-
+    setStatus("create-status", "Could not create certificate: " + error.message, "error");
   } finally {
     button.disabled = false;
   }
-
 });
-
-
-// --------------------------------------------------
-// OPEN TXT OR COE FILE
-// --------------------------------------------------
 
 let pendingEnvelope = null;
 let legacyCertificate = null;
 
 function prepareUnlock(isLegacy) {
-
   $("unlock-password").value = "";
   $("unlock-status").textContent = "";
 
   if (isLegacy) {
-
-    $("unlock-title").innerHTML = "Protect your<br>certificate.";
-
+    $("unlock-title").textContent = "Protect your certificate.";
     $("unlock-description").textContent =
       "This is an original plain-text Citizen of Earth certificate. Choose a password to encrypt it into a .coe file.";
 
-    $("unlock-label").textContent =
-      "Create an encryption password";
-
+    $("unlock-label").textContent = "Create an encryption password";
     $("unlock-hint").textContent =
       "Use at least 12 characters. This password will protect the converted .coe file.";
 
     $("unlock-password").autocomplete = "new-password";
-
-    $("unlock-button").textContent =
-      "Encrypt and convert to .coe →";
+    $("unlock-button").textContent = "Encrypt and convert to .coe →";
 
   } else {
-
-    $("unlock-title").innerHTML = "Unlock<br>certificate.";
-
+    $("unlock-title").textContent = "Unlock certificate.";
     $("unlock-description").textContent =
       "Enter the password used when this .coe file was created.";
 
-    $("unlock-label").textContent =
-      "Certificate password";
-
+    $("unlock-label").textContent = "Certificate password";
     $("unlock-hint").textContent =
       "Your password is processed locally and is never uploaded.";
 
     $("unlock-password").autocomplete = "current-password";
-
-    $("unlock-button").textContent =
-      "Decrypt certificate →";
+    $("unlock-button").textContent = "Decrypt certificate →";
   }
 
   show("unlock");
 }
 
 $("open-file").addEventListener("click", async () => {
-
   const file = $("file-open").files[0];
 
   if (!file) {
-    setStatus(
-      "open-status",
-      "Choose a certificate file first.",
-      "error"
-    );
+    setStatus("open-status", "Choose a certificate file first.", "error");
     return;
   }
 
   if (file.size > 150000) {
-    setStatus(
-      "open-status",
-      "This file exceeds the supported size limit.",
-      "error"
-    );
+    setStatus("open-status", "This file exceeds the supported size limit.", "error");
     return;
   }
 
   try {
-
     const content = await file.text();
+    const isTextFile = file.name.toLowerCase().endsWith(".txt");
 
-    if (file.name.toLowerCase().endsWith(".txt")) {
-
+    if (isTextFile) {
       legacyCertificate = parseLegacyCertificate(content);
       pendingEnvelope = null;
-
       prepareUnlock(true);
-
       return;
     }
 
@@ -1071,49 +943,23 @@ $("open-file").addEventListener("click", async () => {
     prepareUnlock(false);
 
   } catch (error) {
-
-    setStatus(
-      "open-status",
-      error.message || "Could not read this certificate.",
-      "error"
-    );
-
+    setStatus("open-status", error.message || "Could not read this certificate.", "error");
   }
-
 });
 
-
-// --------------------------------------------------
-// DECRYPT COE OR CONVERT TXT
-// --------------------------------------------------
-
 $("unlock-form").addEventListener("submit", async event => {
-
   event.preventDefault();
 
   const password = $("unlock-password").value;
-
   const button = $("unlock-button");
 
   if (legacyCertificate && password.length < 12) {
-
-    setStatus(
-      "unlock-status",
-      "Choose a password with at least 12 characters.",
-      "error"
-    );
-
+    setStatus("unlock-status", "Choose a password with at least 12 characters.", "error");
     return;
   }
 
   if (!crypto.subtle) {
-
-    setStatus(
-      "unlock-status",
-      "Encryption is unavailable. Use HTTPS or localhost.",
-      "error"
-    );
-
+    setStatus("unlock-status", "Encryption is unavailable. Use HTTPS or localhost.", "error");
     return;
   }
 
@@ -1127,71 +973,40 @@ $("unlock-form").addEventListener("submit", async event => {
   );
 
   try {
-
     let data;
 
     if (legacyCertificate) {
-
-      // Import an original Citizen of Earth TXT file.
-      // Preserve its existing Citizenship ID.
-
       data = legacyCertificate;
 
-      const envelope = await encryptCertificate(
-        data,
-        password
-      );
-
+      const envelope = await encryptCertificate(data, password);
       downloadCOE(envelope);
 
       legacyCertificate = null;
 
     } else {
-
-      // Open an existing encrypted CoE-prosec file.
-
-      data = await decryptCertificate(
-        pendingEnvelope,
-        password
-      );
-
+      data = await decryptCertificate(pendingEnvelope, password);
     }
 
     displayCertificate(data);
 
   } catch (error) {
-
     setStatus(
       "unlock-status",
-      "Could not process certificate. " +
-      (error.message || "Check your password and try again."),
+      "Could not process certificate: " + error.message,
       "error"
     );
-
   } finally {
-
     button.disabled = false;
-
   }
-
 });
 
-
-// --------------------------------------------------
-// DISPLAY CERTIFICATE
-// --------------------------------------------------
-
 function displayCertificate(data) {
-
-  $("opened-name").textContent =
-    "Granted to " + data.name;
+  $("opened-name").textContent = "Granted to " + data.name;
 
   $("opened-date").textContent =
-    "Date issued: " +
-    new Date(data.issued_at).toLocaleDateString();
+    "Date issued: " + new Date(data.issued_at).toLocaleDateString();
 
-  $("opened-message").textContent =
-    data.message || "";
+  $("opened-message").textContent = data.message || "";
 
   $("opened-id").textContent =
     "CITIZENSHIP ID · " + data.private_id;
@@ -1199,55 +1014,36 @@ function displayCertificate(data) {
   $("opened-extra").replaceChildren();
 
   if (data.declaration) {
-
     const declaration = document.createElement("p");
-
-    declaration.textContent =
-      "DECLARATION: " + data.declaration;
-
+    declaration.textContent = "DECLARATION: " + data.declaration;
     $("opened-extra").appendChild(declaration);
   }
 
   if (data.original_text) {
-
     const note = document.createElement("p");
-
-    note.textContent =
-      "Imported from an original Citizen of Earth text certificate.";
-
+    note.textContent = "Imported from an original Citizen of Earth text certificate.";
     $("opened-extra").appendChild(note);
   }
 
   show("opened");
 }
 
-
-// --------------------------------------------------
-// NAVIGATION
-// --------------------------------------------------
-
 $("cancel-unlock").addEventListener("click", () => {
-
   pendingEnvelope = null;
   legacyCertificate = null;
-
   show("welcome");
-
 });
 
 $("back-home").addEventListener("click", () => {
-
   pendingEnvelope = null;
   legacyCertificate = null;
-
   show("welcome");
-
 });
 
 $("print-certificate").addEventListener("click", () => {
   window.print();
 });
-
 </script>
+
 </body>
 </html>
