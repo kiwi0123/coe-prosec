@@ -1,469 +1,1253 @@
+
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <meta name="theme-color" content="#174f43">
-
 <title>CoE-prosec | Citizen of Earth</title>
 
-<link rel="icon" type="image/png" href="logo.png">
-
 <style>
+:root {
+  --primary:#174f43;
+  --secondary:#e8eee9;
+  --bg:#f7f8f5;
+  --ink:#17221e;
+  --muted:#65716b;
+  --line:#dce3dd;
+  --serif:Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+}
 
-:root{--primary:#174f43;--on-primary:#fff;--secondary:#e8eee9;--bg:#f7f8f5;--ink:#17221e;--muted:#65716b;--line:#dce3dd;--serif:Georgia,"Times New Roman",serif;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+* { box-sizing:border-box; }
 
-*{box-sizing:border-box}
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--sans);
+}
 
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans)}
+#app {
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
 
-#app{min-height:100vh;display:flex;flex-direction:column}
+header,footer {
+  width:min(100% - 48px,900px);
+  margin:0 auto;
+}
 
-header,footer{width:min(100% - 48px,900px);margin:0 auto}
+header {
+  padding:25px 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid var(--line);
+}
 
-header{padding:25px 0;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line)}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:14px;
+  font-weight:700;
+}
 
-.brand{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;letter-spacing:.02em}
+.brand-mark {
+  width:30px;
+  height:30px;
+  border:1.5px solid var(--primary);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:var(--primary);
+  font-size:17px;
+}
 
-.brand-mark{width:30px;height:30px;border:1.5px solid var(--primary);border-radius:50%;display:grid;place-items:center;color:var(--primary);font-size:17px}
+.header-note {
+  font-size:12px;
+  color:var(--muted);
+}
 
-.header-note{font-size:12px;color:var(--muted)}
+main {
+  width:min(100% - 40px,590px);
+  margin:auto;
+  padding:62px 0 76px;
+  flex:1;
+}
 
-main{width:min(100% - 40px,590px);margin:auto;padding:62px 0 76px;flex:1}
+.eyebrow {
+  color:var(--primary);
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  font-weight:700;
+  margin:0 0 18px;
+}
 
-.eyebrow{color:var(--primary);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;margin:0 0 18px}
+h1 {
+  font:500 clamp(42px,8vw,66px)/1.03 var(--serif);
+  letter-spacing:-.045em;
+  margin:0;
+}
 
-h1{font:500 clamp(42px,8vw,66px)/1.03 var(--serif);letter-spacing:-.045em;margin:0}
+h2 {
+  font:500 29px/1.2 var(--serif);
+  margin:0 0 24px;
+}
 
-h2{font:500 29px/1.2 var(--serif);letter-spacing:-.02em;margin:0 0 24px}
+.intro {
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.7;
+  max-width:460px;
+  margin:20px 0 34px;
+}
 
-.intro{color:var(--muted);font-size:15px;line-height:1.7;max-width:460px;margin:20px 0 34px}
+button {
+  font:inherit;
+  cursor:pointer;
+  border-radius:6px;
+  padding:13px 20px;
+  border:1px solid var(--primary);
+  font-size:14px;
+  font-weight:650;
+}
 
-button{font:inherit;cursor:pointer;border-radius:6px;padding:13px 20px;border:1px solid var(--primary);font-size:14px;font-weight:650;transition:filter .15s,background .15s}
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline:3px solid #9bbeb0;
+  outline-offset:3px;
+}
 
-button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #9bbeb0;outline-offset:3px}
+button.primary {
+  background:var(--primary);
+  color:white;
+}
 
-button.primary{background:var(--primary);color:var(--on-primary)}
+button.secondary {
+  background:transparent;
+  color:var(--primary);
+}
 
-button.primary:hover{filter:brightness(1.12)}
+button:disabled {
+  opacity:.55;
+  cursor:wait;
+}
 
-button.secondary{background:transparent;color:var(--primary)}
+.wide { width:100%; }
 
-button.secondary:hover{background:var(--secondary)}
+.hidden { display:none!important; }
 
-button:disabled{opacity:.55;cursor:wait}
+.card {
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:27px;
+  background:white;
+}
 
-.wide{width:100%}
+.progress {
+  display:flex;
+  gap:7px;
+  margin:0 0 27px;
+}
 
-.hidden{display:none!important}
+.progress span {
+  height:3px;
+  flex:1;
+  background:var(--line);
+  border-radius:4px;
+}
 
-.card{border:1px solid var(--line);border-radius:10px;padding:27px;background:#fff}
+.progress span.active {
+  background:var(--primary);
+}
 
-.progress{display:flex;gap:7px;margin:0 0 27px}
+.step {
+  font-size:12px;
+  color:var(--muted);
+  margin:0 0 14px;
+}
 
-.progress span{height:3px;flex:1;background:var(--line);border-radius:4px}
+.actions {
+  display:flex;
+  gap:10px;
+}
 
-.progress span.active{background:var(--primary)}
+.actions button:first-child { flex:1; }
 
-.step{font-size:12px;color:var(--muted);margin:0 0 14px}
+.field {
+  display:block;
+  text-align:left;
+  margin:0 0 19px;
+}
 
-.actions{display:flex;gap:10px}
+.field span {
+  display:block;
+  font-size:12px;
+  font-weight:650;
+  margin:0 0 8px;
+}
 
-.actions button:first-child{flex:1}
+.field input,
+.field textarea {
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:12px;
+  font:inherit;
+  color:var(--ink);
+  background:#fbfcfa;
+}
 
-.field{display:block;text-align:left;margin:0 0 19px}
+.field textarea {
+  min-height:105px;
+  resize:vertical;
+}
 
-.field span{display:block;font-size:12px;font-weight:650;margin:0 0 8px}
+.hint {
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.6;
+  margin:8px 0 0;
+}
 
-.field input,.field textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:12px;font:inherit;color:var(--ink);background:#fbfcfa}
+.notice {
+  padding:13px 15px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#f8faf8;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+  margin:18px 0;
+}
 
-.field textarea{min-height:105px;resize:vertical}
+.button-row {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:16px;
+}
 
-.hint{font-size:12px;color:var(--muted);line-height:1.6;margin:8px 0 0}
+.button-row button { flex:1; }
 
-.notice{padding:13px 15px;border:1px solid var(--line);border-radius:7px;background:#f8faf8;color:var(--muted);font-size:12px;line-height:1.6;margin:18px 0}
+.result { text-align:center; }
 
-.button-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.seal {
+  width:104px;
+  height:104px;
+  border:1px solid var(--primary);
+  border-radius:50%;
+  margin:0 auto 25px;
+  display:grid;
+  place-items:center;
+  color:var(--primary);
+  font-size:45px;
+}
 
-.button-row button{flex:1}
+.certificate {
+  border:1px solid var(--primary);
+  padding:26px 20px;
+  margin:27px 0 20px;
+  background:white;
+  overflow-wrap:anywhere;
+}
 
-.result{text-align:center}
+.certificate-label {
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.2em;
+  color:var(--muted);
+}
 
-.seal{width:104px;height:104px;border:1px solid var(--primary);border-radius:50%;margin:0 auto 25px;display:grid;place-items:center;color:var(--primary);font-size:45px}
+.certificate strong {
+  display:block;
+  font:500 28px var(--serif);
+  margin:10px 0;
+}
 
-.certificate{border:1px solid var(--primary);padding:26px 20px;margin:27px 0 20px;background:#fff}
+.certificate p {
+  font-size:12px;
+  color:var(--muted);
+  line-height:1.6;
+}
 
-.certificate-label{font-size:10px;text-transform:uppercase;letter-spacing:.2em;color:var(--muted)}
+.private-id {
+  font-family:monospace;
+  font-size:11px!important;
+  word-break:break-all;
+}
 
-.certificate strong{display:block;font:500 28px var(--serif);margin:10px 0}
+.status {
+  min-height:20px;
+  font-size:12px;
+  color:var(--muted);
+  margin:12px 0;
+}
 
-.certificate p{font-size:12px;color:var(--muted);line-height:1.6;overflow-wrap:anywhere}
+.error { color:#a52b2b; }
+.success-text { color:var(--primary); }
 
-.private-id{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px!important;word-break:break-all}
+footer {
+  padding:18px 0 24px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:11px;
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+}
 
-footer{padding:18px 0 24px;border-top:1px solid var(--line);color:var(--muted);font-size:11px;display:flex;justify-content:space-between;gap:12px}
+@media(max-width:520px) {
+  header,footer { width:calc(100% - 36px); }
+  .header-note { display:none; }
+  main { padding:48px 0 60px; }
+  .card { padding:22px 18px; }
+  footer { flex-direction:column; }
+  .button-row { flex-direction:column; }
+}
 
-.status{min-height:20px;font-size:12px;color:var(--muted);margin:12px 0}
-
-.error{color:#a52b2b}
-
-.success-text{color:var(--primary)}
-
-a{color:var(--primary)}
-
-@media(max-width:520px){header,footer{width:calc(100% - 36px)}.header-note{display:none}main{padding:48px 0 60px}.card{padding:22px 18px}footer{flex-direction:column}.button-row{flex-direction:column}}
-
-@media print{header,footer,.no-print{display:none!important}body{background:white}main{padding:20px 0}.certificate{break-inside:avoid}}
-
+@media print {
+  header,footer,.no-print { display:none!important; }
+  body { background:white; }
+  main { padding:20px 0; }
+  .certificate { break-inside:avoid; }
+}
 </style>
-
 </head>
 
 <body>
-
 <div id="app">
 
 <header>
-
-  <div class="brand"><span class="brand-mark">◎</span><span>EARTH CITIZENSHIP · PROSEC</span></div>
-
+  <div class="brand">
+    <span class="brand-mark">◎</span>
+    <span>EARTH CITIZENSHIP · PROSEC</span>
+  </div>
   <span class="header-note">One planet. One humanity. Protected locally.</span>
-
 </header>
 
 <main>
 
-  <section id="welcome">
+<!-- WELCOME -->
 
-    <p class="eyebrow">A more private certificate</p>
+<section id="welcome">
+  <p class="eyebrow">A more private certificate</p>
 
-    <h1>Your place<br>on Earth.</h1>
+  <h1>Your place<br>on Earth.</h1>
 
-    <p class="intro">CoE-prosec is the protected version of Citizen of Earth. Create an encrypted citizenship file, or open one you already have. Your information stays on this device.</p>
+  <p class="intro">
+    CoE-prosec is the protected version of Citizen of Earth.
+    Create an encrypted citizenship file, or open one you already have.
+    Your information stays on this device.
+  </p>
 
-    <div class="card">
+  <div class="card">
+    <p class="eyebrow">Create a new file</p>
 
-      <p class="eyebrow">Create a new file</p>
+    <p class="intro" style="margin:0 0 18px">
+      Answer three declaration questions, personalize your certificate,
+      and protect it with a password.
+    </p>
 
-      <p class="intro" style="margin:0 0 18px">Answer the three declaration questions, personalize your certificate, and protect it with a password.</p>
+    <button class="primary wide" id="begin">
+      Create a .coe file →
+    </button>
+  </div>
 
-      <button class="primary wide" id="begin">Create a .coe file →</button>
+  <div class="card" style="margin-top:14px">
+    <p class="eyebrow">Already have a certificate?</p>
 
+    <p class="intro" style="margin:0 0 18px">
+      Open an original .txt certificate or an encrypted .coe certificate.
+    </p>
+
+    <label class="field">
+      <span>Select your certificate</span>
+      <input id="file-open" type="file" accept=".coe,.txt,text/plain,application/json">
+    </label>
+
+    <button class="secondary wide" id="open-file">
+      Open selected file
+    </button>
+
+    <p class="hint">
+      Files are processed locally in your browser. They are not uploaded.
+    </p>
+
+    <p id="open-status" class="status" role="status"></p>
+  </div>
+
+  <div class="notice">
+    CoE-prosec is a symbolic citizenship project. Its certificate is
+    not a government-issued identity document, legal nationality,
+    or official proof of citizenship.
+  </div>
+</section>
+
+
+<!-- QUESTIONS -->
+
+<section id="quiz" class="hidden" aria-live="polite">
+  <p class="eyebrow">A simple declaration</p>
+
+  <div class="progress">
+    <span></span><span></span><span></span>
+  </div>
+
+  <div class="card">
+    <p class="step" id="step">QUESTION 01 / 03</p>
+
+    <h2 id="question">Are you human?</h2>
+
+    <div class="actions">
+      <button class="primary" id="yes">Yes</button>
+      <button class="secondary" id="no">No</button>
+    </div>
+  </div>
+</section>
+
+
+<!-- CREATE CERTIFICATE -->
+
+<section id="details" class="hidden">
+  <p class="eyebrow">Make it yours</p>
+
+  <h1>Your certificate,<br>your key.</h1>
+
+  <p class="intro">
+    Add your details and choose a password. Your certificate
+    will be encrypted before the .coe file is downloaded.
+  </p>
+
+  <form class="card" id="details-form">
+
+    <label class="field">
+      <span>Your name</span>
+      <input id="citizen-name" maxlength="80" required
+        placeholder="Name to appear on certificate">
+    </label>
+
+    <label class="field">
+      <span>Your message to Earth</span>
+      <textarea id="citizen-message" maxlength="1000" required
+        placeholder="A promise, a hope, or a few words..."></textarea>
+    </label>
+
+    <label class="field">
+      <span>Create a password</span>
+      <input id="password" type="password" minlength="12"
+        autocomplete="new-password" required
+        placeholder="At least 12 characters">
+    </label>
+
+    <label class="field">
+      <span>Confirm password</span>
+      <input id="password-confirm" type="password" minlength="12"
+        autocomplete="new-password" required
+        placeholder="Enter the same password again">
+    </label>
+
+    <p class="hint">
+      Your password is never stored in the file or sent anywhere.
+      If you lose it, your certificate cannot be recovered.
+    </p>
+
+    <div class="notice">
+      Encryption: AES-256-GCM.
+      Key derivation: PBKDF2-SHA-256.
     </div>
 
-    <div class="card" style="margin-top:14px">
+    <button class="primary wide" type="submit" id="create-file">
+      Encrypt and download .coe →
+    </button>
 
-      <p class="eyebrow">Already have a file?</p>
+    <p id="create-status" class="status" role="status"></p>
+  </form>
+</section>
 
-      <p class="intro" style="margin:0 0 18px">Open and decrypt an existing CoE-prosec certificate on this device.</p>
 
-      <label class="field"><span>Select your .coe file</span><input id="file-open" type="file" accept=".coe,application/json"></label>
+<!-- UNLOCK -->
 
-      <button class="secondary wide" id="open-file">Open selected file</button>
+<section id="unlock" class="hidden">
+  <p class="eyebrow">Certificate security</p>
 
-      <p class="hint">The file is read locally in your browser. It is not uploaded.</p>
+  <h1 id="unlock-title">Unlock<br>certificate.</h1>
 
-      <p id="open-status" class="status" role="status"></p>
+  <p class="intro" id="unlock-description">
+    Enter the password used when this .coe file was created.
+  </p>
 
-    </div>
+  <form class="card" id="unlock-form">
 
-    <div class="notice">CoE-prosec is a symbolic citizenship project. Its certificate is not a government-issued identity document, legal nationality, or official proof of citizenship.</div>
+    <label class="field">
+      <span id="unlock-label">Certificate password</span>
+      <input id="unlock-password" type="password"
+        autocomplete="current-password" required>
+    </label>
 
-  </section>
+    <p class="hint" id="unlock-hint"></p>
 
-  <section id="quiz" class="hidden" aria-live="polite">
+    <button class="primary wide" id="unlock-button" type="submit">
+      Decrypt certificate →
+    </button>
 
-    <p class="eyebrow">A simple declaration</p>
+    <p id="unlock-status" class="status" role="status"></p>
 
-    <div class="progress"><span></span><span></span><span></span></div>
+    <button class="secondary wide" type="button" id="cancel-unlock">
+      Cancel
+    </button>
 
-    <div class="card">
+  </form>
+</section>
 
-      <p class="step" id="step">QUESTION 01 / 03</p>
 
-      <h2 id="question">Are you human?</h2>
+<!-- OPENED CERTIFICATE -->
 
-      <div class="actions"><button class="primary" id="yes">Yes</button><button class="secondary" id="no">No</button></div>
+<section id="opened" class="hidden result" aria-live="polite">
 
-    </div>
+  <div class="seal">◎</div>
 
-  </section>
+  <p class="eyebrow">Certificate opened</p>
 
-  <section id="details" class="hidden">
+  <h1>You belong<br>to Earth.</h1>
 
-    <p class="eyebrow">Make it yours</p>
+  <p class="intro" style="margin-left:auto;margin-right:auto">
+    Your certificate has been successfully processed on this device.
+  </p>
 
-    <h1>Your certificate,<br>your key.</h1>
+  <div class="certificate" id="opened-certificate">
 
-    <p class="intro">Add your details and choose a strong password. The password encrypts the certificate before the .coe file is downloaded.</p>
+    <span class="certificate-label">Certificate of belonging</span>
 
-    <form class="card" id="details-form">
+    <strong>Citizen of Earth</strong>
 
-      <label class="field"><span>Your name</span><input id="citizen-name" maxlength="80" autocomplete="name" required placeholder="Name to appear on certificate"></label>
+    <p id="opened-name"></p>
+    <p id="opened-date"></p>
+    <p id="opened-message"></p>
 
-      <label class="field"><span>Your message to yourself and Earth</span><textarea id="citizen-message" maxlength="1000" required placeholder="A promise, a hope, or a few words..."></textarea></label>
+    <p class="private-id" id="opened-id"></p>
 
-      <label class="field"><span>Create a password</span><input id="password" type="password" minlength="12" autocomplete="new-password" required placeholder="At least 12 characters"></label>
+    <div id="opened-extra"></div>
 
-      <label class="field"><span>Confirm password</span><input id="password-confirm" type="password" minlength="12" autocomplete="new-password" required placeholder="Enter the same password again"></label>
+  </div>
 
-      <p class="hint">Your password is never saved in the file or sent anywhere. If you lose it, this file cannot be recovered. Use a password you can safely keep.</p>
+  <div class="button-row no-print">
+    <button class="primary" id="print-certificate">
+      Print certificate
+    </button>
 
-      <div class="notice">Encryption: AES-256-GCM. Password-based key derivation: PBKDF2-SHA-256. A fresh random private ID, salt, and encryption nonce are generated for this certificate.</div>
+    <button class="secondary" id="back-home">
+      Back to home
+    </button>
+  </div>
 
-      <button class="primary wide" id="create-file" type="submit">Encrypt and download .coe →</button>
+  <p class="hint">
+    Your private ID is displayed only after successful processing.
+  </p>
 
-      <p id="create-status" class="status" role="status"></p>
-
-    </form>
-
-  </section>
-
-  <section id="opened" class="hidden result" aria-live="polite">
-
-    <div class="seal">◎</div>
-
-    <p class="eyebrow">Encrypted file opened</p>
-
-    <h1>You belong<br>to Earth.</h1>
-
-    <p class="intro" style="margin-left:auto;margin-right:auto">Your certificate was successfully decrypted on this device.</p>
-
-    <div class="certificate" id="opened-certificate">
-
-      <span class="certificate-label">Certificate of belonging</span>
-
-      <strong>Citizen of Earth</strong>
-
-      <p id="opened-name"></p>
-
-      <p id="opened-date"></p>
-
-      <p id="opened-message"></p>
-
-      <p class="private-id" id="opened-id"></p>
-
-    </div>
-
-    <div class="button-row no-print">
-
-      <button class="primary" id="print-certificate">Print certificate</button>
-
-      <button class="secondary" id="back-home">Back to home</button>
-
-    </div>
-
-    <p class="hint">Your private ID is shown only after successful decryption. Anyone with the .coe file still needs its password to read it.</p>
-
-  </section>
-
-  <section id="unlock" class="hidden">
-
-    <p class="eyebrow">Unlock certificate</p>
-
-    <h1>Welcome<br>back.</h1>
-
-    <p class="intro">Enter the password used when this .coe file was created.</p>
-
-    <form class="card" id="unlock-form">
-
-      <label class="field"><span>Certificate password</span><input id="unlock-password" type="password" autocomplete="current-password" required></label>
-
-      <button class="primary wide" id="unlock-button" type="submit">Decrypt certificate →</button>
-
-      <p id="unlock-status" class="status" role="status"></p>
-
-      <button class="secondary wide" type="button" id="cancel-unlock">Cancel</button>
-
-    </form>
-
-  </section>
+</section>
 
 </main>
 
-<footer><span>EARTH CITIZENSHIP PROJECT · COE-PROSEC</span><span>Humanity has one home.</span></footer>
+<footer>
+  <span>EARTH CITIZENSHIP PROJECT · COE-PROSEC</span>
+  <span>Humanity has one home.</span>
+</footer>
 
 </div>
 
-<script>
 
+<script>
 "use strict";
 
 const $ = id => document.getElementById(id);
 
-const sections = ["welcome","quiz","details","opened","unlock"];
+const sections = [
+  "welcome",
+  "quiz",
+  "details",
+  "unlock",
+  "opened"
+];
 
-function show(id){sections.forEach(s=>$(s).classList.toggle("hidden",s!==id));}
-
-const questions=["Are you human?","Are you on Earth?","Do you love humans and Earth?"];
-
-let questionIndex=0, selectedFile=null, pendingEnvelope=null;
-
-function setStatus(id,message,kind=""){const el=$(id);el.textContent=message;el.className="status "+kind;}
-
-$("begin").addEventListener("click",()=>{questionIndex=0;renderQuestion();show("quiz");});
-
-function renderQuestion(){
-
-  $("question").textContent=questions[questionIndex];
-
-  $("step").textContent=`QUESTION 0${questionIndex+1} / 03`;
-
-  document.querySelectorAll(".progress span").forEach((el,i)=>el.classList.toggle("active",i<=questionIndex));
-
+function show(id) {
+  sections.forEach(section => {
+    $(section).classList.toggle("hidden", section !== id);
+  });
 }
 
-$("yes").addEventListener("click",()=>{questionIndex++;if(questionIndex===3)show("details");else renderQuestion();});
-
-$("no").addEventListener("click",()=>{show("welcome");setStatus("open-status","All three answers need to be yes to make a certificate.");});
-
-function randomBytes(n){const a=new Uint8Array(n);crypto.getRandomValues(a);return a;}
-
-function toB64(bytes){let s="";bytes.forEach(b=>s+=String.fromCharCode(b));return btoa(s);}
-
-function fromB64(s){const raw=atob(s);return Uint8Array.from(raw,c=>c.charCodeAt(0));}
-
-async function deriveKey(password,salt,iterations){
-
-  const material=await crypto.subtle.importKey("raw",new TextEncoder().encode(password),"PBKDF2",false,["deriveKey"]);
-
-  return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations,hash:"SHA-256"},material,{name:"AES-GCM",length:256},false,["encrypt","decrypt"]);
-
+function setStatus(id, message, kind = "") {
+  const element = $(id);
+  element.textContent = message;
+  element.className = "status " + kind;
 }
 
-const FORMAT="COE-PROSEC", VERSION=1, ITERATIONS=600000;
 
-async function encryptCertificate(data,password){
+// --------------------------------------------------
+// QUESTIONS
+// --------------------------------------------------
 
-  const salt=randomBytes(16),iv=randomBytes(12);
+const questions = [
+  "Are you human?",
+  "Are you on Earth?",
+  "Do you love humans and Earth?"
+];
 
-  const aad=new TextEncoder().encode(`${FORMAT}:${VERSION}`);
+let questionIndex = 0;
 
-  const key=await deriveKey(password,salt,ITERATIONS);
+function renderQuestion() {
+  $("question").textContent = questions[questionIndex];
 
-  const plaintext=new TextEncoder().encode(JSON.stringify(data));
+  $("step").textContent =
+    `QUESTION 0${questionIndex + 1} / 03`;
 
-  const ciphertext=await crypto.subtle.encrypt({name:"AES-GCM",iv,additionalData:aad,tagLength:128},key,plaintext);
-
-  return {format:FORMAT,version:VERSION,kdf:"PBKDF2-SHA-256",iterations:ITERATIONS,cipher:"AES-256-GCM",salt:toB64(salt),iv:toB64(iv),payload:toB64(new Uint8Array(ciphertext))};
-
+  document.querySelectorAll(".progress span")
+    .forEach((element, index) => {
+      element.classList.toggle("active", index <= questionIndex);
+    });
 }
 
-async function decryptCertificate(envelope,password){
+$("begin").addEventListener("click", () => {
+  questionIndex = 0;
+  renderQuestion();
+  show("quiz");
+});
 
-  if(!envelope||envelope.format!==FORMAT||envelope.version!==VERSION||envelope.kdf!=="PBKDF2-SHA-256"||envelope.cipher!=="AES-256-GCM")throw new Error("This is not a supported CoE-prosec file.");
+$("yes").addEventListener("click", () => {
+  questionIndex++;
 
-  if(!Number.isInteger(envelope.iterations)||envelope.iterations<100000||envelope.iterations>2000000)throw new Error("The file has an unsupported key-derivation setting.");
+  if (questionIndex === 3) {
+    show("details");
+  } else {
+    renderQuestion();
+  }
+});
 
-  const salt=fromB64(envelope.salt),iv=fromB64(envelope.iv),payload=fromB64(envelope.payload);
+$("no").addEventListener("click", () => {
+  show("welcome");
+});
 
-  if(salt.length!==16||iv.length!==12||payload.length<17||payload.length>100000)throw new Error("The file is damaged or has an invalid structure.");
 
-  const key=await deriveKey(password,salt,envelope.iterations);
+// --------------------------------------------------
+// CRYPTOGRAPHY
+// --------------------------------------------------
 
-  const aad=new TextEncoder().encode(`${FORMAT}:${VERSION}`);
+function randomBytes(length) {
+  const bytes = new Uint8Array(length);
+  crypto.getRandomValues(bytes);
+  return bytes;
+}
 
-  const plain=await crypto.subtle.decrypt({name:"AES-GCM",iv,additionalData:aad,tagLength:128},key,payload);
+function toB64(bytes) {
+  let binary = "";
 
-  const data=JSON.parse(new TextDecoder().decode(plain));
+  bytes.forEach(byte => {
+    binary += String.fromCharCode(byte);
+  });
 
-  if(!data||typeof data.private_id!=="string"||typeof data.name!=="string")throw new Error("The decrypted certificate has invalid contents.");
+  return btoa(binary);
+}
+
+function fromB64(value) {
+  const binary = atob(value);
+
+  return Uint8Array.from(
+    binary,
+    character => character.charCodeAt(0)
+  );
+}
+
+async function deriveKey(password, salt, iterations) {
+
+  const material = await crypto.subtle.importKey(
+    "raw",
+    new TextEncoder().encode(password),
+    "PBKDF2",
+    false,
+    ["deriveKey"]
+  );
+
+  return crypto.subtle.deriveKey(
+    {
+      name: "PBKDF2",
+      salt,
+      iterations,
+      hash: "SHA-256"
+    },
+    material,
+    {
+      name: "AES-GCM",
+      length: 256
+    },
+    false,
+    ["encrypt", "decrypt"]
+  );
+}
+
+const FORMAT = "COE-PROSEC";
+const VERSION = 1;
+const ITERATIONS = 600000;
+
+async function encryptCertificate(data, password) {
+
+  const salt = randomBytes(16);
+  const iv = randomBytes(12);
+
+  const aad = new TextEncoder().encode(
+    `${FORMAT}:${VERSION}`
+  );
+
+  const key = await deriveKey(
+    password,
+    salt,
+    ITERATIONS
+  );
+
+  const plaintext = new TextEncoder().encode(
+    JSON.stringify(data)
+  );
+
+  const ciphertext = await crypto.subtle.encrypt(
+    {
+      name: "AES-GCM",
+      iv,
+      additionalData: aad,
+      tagLength: 128
+    },
+    key,
+    plaintext
+  );
+
+  return {
+    format: FORMAT,
+    version: VERSION,
+    kdf: "PBKDF2-SHA-256",
+    iterations: ITERATIONS,
+    cipher: "AES-256-GCM",
+    salt: toB64(salt),
+    iv: toB64(iv),
+    payload: toB64(new Uint8Array(ciphertext))
+  };
+}
+
+async function decryptCertificate(envelope, password) {
+
+  if (
+    !envelope ||
+    envelope.format !== FORMAT ||
+    envelope.version !== VERSION ||
+    envelope.kdf !== "PBKDF2-SHA-256" ||
+    envelope.cipher !== "AES-256-GCM"
+  ) {
+    throw new Error("Unsupported CoE-prosec file.");
+  }
+
+  if (
+    !Number.isInteger(envelope.iterations) ||
+    envelope.iterations < 100000 ||
+    envelope.iterations > 2000000
+  ) {
+    throw new Error("Unsupported encryption settings.");
+  }
+
+  const salt = fromB64(envelope.salt);
+  const iv = fromB64(envelope.iv);
+  const payload = fromB64(envelope.payload);
+
+  if (
+    salt.length !== 16 ||
+    iv.length !== 12 ||
+    payload.length < 17 ||
+    payload.length > 100000
+  ) {
+    throw new Error("Invalid or damaged certificate file.");
+  }
+
+  const key = await deriveKey(
+    password,
+    salt,
+    envelope.iterations
+  );
+
+  const aad = new TextEncoder().encode(
+    `${FORMAT}:${VERSION}`
+  );
+
+  const plaintext = await crypto.subtle.decrypt(
+    {
+      name: "AES-GCM",
+      iv,
+      additionalData: aad,
+      tagLength: 128
+    },
+    key,
+    payload
+  );
+
+  const data = JSON.parse(
+    new TextDecoder().decode(plaintext)
+  );
+
+  if (
+    !data ||
+    typeof data.private_id !== "string" ||
+    typeof data.name !== "string"
+  ) {
+    throw new Error("Invalid certificate contents.");
+  }
 
   return data;
-
 }
 
-$("details-form").addEventListener("submit",async e=>{
 
-  e.preventDefault();
+// --------------------------------------------------
+// ORIGINAL CITIZEN OF EARTH TXT SUPPORT
+// --------------------------------------------------
 
-  const name=$("citizen-name").value.trim(),message=$("citizen-message").value.trim(),password=$("password").value,confirm=$("password-confirm").value;
+function parseLegacyCertificate(text) {
 
-  if(password.length<12){setStatus("create-status","Use a password with at least 12 characters.","error");return;}
+  const name = text.match(/^Name:\s*(.*)$/m)?.[1]?.trim();
 
-  if(password!==confirm){setStatus("create-status","The passwords do not match.","error");return;}
+  const id = text.match(
+    /^Citizenship ID:\s*(.*)$/m
+  )?.[1]?.trim();
 
-  if(!crypto.subtle){setStatus("create-status","Secure encryption is unavailable in this browser. Use a modern browser in a secure context (HTTPS or localhost).","error");return;}
+  const date = text.match(
+    /^Date issued:\s*(.*)$/m
+  )?.[1]?.trim();
 
-  const button=$("create-file");button.disabled=true;setStatus("create-status","Generating your private ID and encrypting your certificate...");
+  const messageMatch = text.match(
+    /Personal message:\s*([\s\S]*?)(?=\n\s*DECLARATION)/i
+  );
 
-  try{
+  const declarationMatch = text.match(
+    /DECLARATION\s*([\s\S]*?)(?=\n\s*This is a personal, symbolic certificate\.)/i
+  );
 
-    const data={private_id:toB64(randomBytes(32)).replace(/=+$/,""),name,message,issued_at:new Date().toISOString(),declaration:"The holder affirms that they are human, are on Earth, and love humans and Earth."};
+  if (!name || !id || !date || !messageMatch) {
+    throw new Error(
+      "This text file does not contain a valid Citizen of Earth certificate."
+    );
+  }
 
-    const envelope=await encryptCertificate(data,password);
+  const parsedDate = new Date(date);
 
-    const blob=new Blob([JSON.stringify(envelope)],{type:"application/vnd.coe-prosec+json"});
+  if (Number.isNaN(parsedDate.getTime())) {
+    throw new Error("The certificate has an invalid issue date.");
+  }
 
-    const url=URL.createObjectURL(blob),a=document.createElement("a");
+  return {
+    name,
+    private_id: id,
+    issued_at: parsedDate.toISOString(),
+    message: messageMatch[1].trim(),
 
-    a.href=url;a.download="citizen-of-earth.coe";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+    declaration: declarationMatch
+      ? declarationMatch[1].trim()
+      : "The holder affirms that they are human, are on Earth, and love humans and Earth.",
 
-    setStatus("create-status","Your encrypted .coe file has been created. Keep your password safe.","success-text");
+    original_text: text,
+    imported_from: "Citizen of Earth TXT"
+  };
+}
 
-  }catch(err){setStatus("create-status","Could not create the file: "+err.message,"error");}
 
-  finally{button.disabled=false;}
+// --------------------------------------------------
+// FILE DOWNLOAD
+// --------------------------------------------------
+
+function downloadCOE(envelope) {
+
+  const blob = new Blob(
+    [JSON.stringify(envelope, null, 2)],
+    { type: "application/vnd.coe-prosec+json" }
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  const anchor = document.createElement("a");
+
+  anchor.href = url;
+  anchor.download = "citizen-of-earth.coe";
+
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+
+// --------------------------------------------------
+// CREATE NEW CERTIFICATE
+// --------------------------------------------------
+
+$("details-form").addEventListener("submit", async event => {
+
+  event.preventDefault();
+
+  const name = $("citizen-name").value.trim();
+  const message = $("citizen-message").value.trim();
+
+  const password = $("password").value;
+  const confirmation = $("password-confirm").value;
+
+  if (password.length < 12) {
+    setStatus(
+      "create-status",
+      "Your password must contain at least 12 characters.",
+      "error"
+    );
+    return;
+  }
+
+  if (password !== confirmation) {
+    setStatus(
+      "create-status",
+      "The passwords do not match.",
+      "error"
+    );
+    return;
+  }
+
+  if (!crypto.subtle) {
+    setStatus(
+      "create-status",
+      "Encryption is unavailable. Use HTTPS or localhost in a modern browser.",
+      "error"
+    );
+    return;
+  }
+
+  const button = $("create-file");
+
+  button.disabled = true;
+
+  setStatus(
+    "create-status",
+    "Generating ID and encrypting certificate..."
+  );
+
+  try {
+
+    const data = {
+      private_id: toB64(randomBytes(32)).replace(/=+$/, ""),
+      name,
+      message,
+      issued_at: new Date().toISOString(),
+
+      declaration:
+        "The holder affirms that they are human, are on Earth, and love humans and Earth."
+    };
+
+    const envelope = await encryptCertificate(
+      data,
+      password
+    );
+
+    downloadCOE(envelope);
+
+    setStatus(
+      "create-status",
+      "Your encrypted .coe certificate has been created.",
+      "success-text"
+    );
+
+  } catch (error) {
+
+    setStatus(
+      "create-status",
+      "Could not create certificate: " + error.message,
+      "error"
+    );
+
+  } finally {
+    button.disabled = false;
+  }
 
 });
 
-$("open-file").addEventListener("click",async()=>{
 
-  const file=$("file-open").files[0];if(!file){setStatus("open-status","Choose a .coe file first.","error");return;}
+// --------------------------------------------------
+// OPEN TXT OR COE FILE
+// --------------------------------------------------
 
-  if(file.size>150000){setStatus("open-status","This file is larger than the supported size limit.","error");return;}
+let pendingEnvelope = null;
+let legacyCertificate = null;
 
-  try{
+function prepareUnlock(isLegacy) {
 
-    const text=await file.text();pendingEnvelope=JSON.parse(text);
+  $("unlock-password").value = "";
+  $("unlock-status").textContent = "";
 
-    if(pendingEnvelope.format!==FORMAT)throw new Error("This file does not appear to be a CoE-prosec certificate.");
+  if (isLegacy) {
 
-    selectedFile=file;setStatus("open-status",`Selected: ${file.name}`,"success-text");$("unlock-password").value="";setStatus("unlock-status","");
+    $("unlock-title").innerHTML = "Protect your<br>certificate.";
 
-    show("unlock");$("unlock-password").focus();
+    $("unlock-description").textContent =
+      "This is an original plain-text Citizen of Earth certificate. Choose a password to encrypt it into a .coe file.";
 
-  }catch(err){setStatus("open-status",err.message,"error");}
+    $("unlock-label").textContent =
+      "Create an encryption password";
+
+    $("unlock-hint").textContent =
+      "Use at least 12 characters. This password will protect the converted .coe file.";
+
+    $("unlock-password").autocomplete = "new-password";
+
+    $("unlock-button").textContent =
+      "Encrypt and convert to .coe →";
+
+  } else {
+
+    $("unlock-title").innerHTML = "Unlock<br>certificate.";
+
+    $("unlock-description").textContent =
+      "Enter the password used when this .coe file was created.";
+
+    $("unlock-label").textContent =
+      "Certificate password";
+
+    $("unlock-hint").textContent =
+      "Your password is processed locally and is never uploaded.";
+
+    $("unlock-password").autocomplete = "current-password";
+
+    $("unlock-button").textContent =
+      "Decrypt certificate →";
+  }
+
+  show("unlock");
+}
+
+$("open-file").addEventListener("click", async () => {
+
+  const file = $("file-open").files[0];
+
+  if (!file) {
+    setStatus(
+      "open-status",
+      "Choose a certificate file first.",
+      "error"
+    );
+    return;
+  }
+
+  if (file.size > 150000) {
+    setStatus(
+      "open-status",
+      "This file exceeds the supported size limit.",
+      "error"
+    );
+    return;
+  }
+
+  try {
+
+    const content = await file.text();
+
+    if (file.name.toLowerCase().endsWith(".txt")) {
+
+      legacyCertificate = parseLegacyCertificate(content);
+      pendingEnvelope = null;
+
+      prepareUnlock(true);
+
+      return;
+    }
+
+    pendingEnvelope = JSON.parse(content);
+    legacyCertificate = null;
+
+    if (pendingEnvelope.format !== FORMAT) {
+      throw new Error("Unsupported certificate format.");
+    }
+
+    prepareUnlock(false);
+
+  } catch (error) {
+
+    setStatus(
+      "open-status",
+      error.message || "Could not read this certificate.",
+      "error"
+    );
+
+  }
 
 });
 
-$("unlock-form").addEventListener("submit",async e=>{
 
-  e.preventDefault();const password=$("unlock-password").value,button=$("unlock-button");button.disabled=true;setStatus("unlock-status","Decrypting locally...");
+// --------------------------------------------------
+// DECRYPT COE OR CONVERT TXT
+// --------------------------------------------------
 
-  try{
+$("unlock-form").addEventListener("submit", async event => {
 
-    const data=await decryptCertificate(pendingEnvelope,password);
+  event.preventDefault();
 
-    $("opened-name").textContent="Granted to "+data.name;
+  const password = $("unlock-password").value;
 
-    $("opened-date").textContent="Date issued: "+new Date(data.issued_at).toLocaleDateString();
+  const button = $("unlock-button");
 
-    $("opened-message").textContent=data.message;
+  if (legacyCertificate && password.length < 12) {
 
-    $("opened-id").textContent="PRIVATE ID · "+data.private_id;
+    setStatus(
+      "unlock-status",
+      "Choose a password with at least 12 characters.",
+      "error"
+    );
 
-    show("opened");
+    return;
+  }
 
-  }catch(err){setStatus("unlock-status","Unable to decrypt. Check your password and try again.","error");}
+  if (!crypto.subtle) {
 
-  finally{button.disabled=false;}
+    setStatus(
+      "unlock-status",
+      "Encryption is unavailable. Use HTTPS or localhost.",
+      "error"
+    );
+
+    return;
+  }
+
+  button.disabled = true;
+
+  setStatus(
+    "unlock-status",
+    legacyCertificate
+      ? "Encrypting your original certificate..."
+      : "Decrypting certificate..."
+  );
+
+  try {
+
+    let data;
+
+    if (legacyCertificate) {
+
+      // Import an original Citizen of Earth TXT file.
+      // Preserve its existing Citizenship ID.
+
+      data = legacyCertificate;
+
+      const envelope = await encryptCertificate(
+        data,
+        password
+      );
+
+      downloadCOE(envelope);
+
+      legacyCertificate = null;
+
+    } else {
+
+      // Open an existing encrypted CoE-prosec file.
+
+      data = await decryptCertificate(
+        pendingEnvelope,
+        password
+      );
+
+    }
+
+    displayCertificate(data);
+
+  } catch (error) {
+
+    setStatus(
+      "unlock-status",
+      "Could not process certificate. " +
+      (error.message || "Check your password and try again."),
+      "error"
+    );
+
+  } finally {
+
+    button.disabled = false;
+
+  }
 
 });
 
-$("cancel-unlock").addEventListener("click",()=>{pendingEnvelope=null;selectedFile=null;show("welcome");});
 
-$("back-home").addEventListener("click",()=>{pendingEnvelope=null;selectedFile=null;show("welcome");});
+// --------------------------------------------------
+// DISPLAY CERTIFICATE
+// --------------------------------------------------
 
-$("print-certificate").addEventListener("click",()=>window.print());
+function displayCertificate(data) {
+
+  $("opened-name").textContent =
+    "Granted to " + data.name;
+
+  $("opened-date").textContent =
+    "Date issued: " +
+    new Date(data.issued_at).toLocaleDateString();
+
+  $("opened-message").textContent =
+    data.message || "";
+
+  $("opened-id").textContent =
+    "CITIZENSHIP ID · " + data.private_id;
+
+  $("opened-extra").replaceChildren();
+
+  if (data.declaration) {
+
+    const declaration = document.createElement("p");
+
+    declaration.textContent =
+      "DECLARATION: " + data.declaration;
+
+    $("opened-extra").appendChild(declaration);
+  }
+
+  if (data.original_text) {
+
+    const note = document.createElement("p");
+
+    note.textContent =
+      "Imported from an original Citizen of Earth text certificate.";
+
+    $("opened-extra").appendChild(note);
+  }
+
+  show("opened");
+}
+
+
+// --------------------------------------------------
+// NAVIGATION
+// --------------------------------------------------
+
+$("cancel-unlock").addEventListener("click", () => {
+
+  pendingEnvelope = null;
+  legacyCertificate = null;
+
+  show("welcome");
+
+});
+
+$("back-home").addEventListener("click", () => {
+
+  pendingEnvelope = null;
+  legacyCertificate = null;
+
+  show("welcome");
+
+});
+
+$("print-certificate").addEventListener("click", () => {
+  window.print();
+});
 
 </script>
-
 </body>
-
 </html>
